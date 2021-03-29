@@ -1,25 +1,47 @@
 import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
+import SearchBar from './components/SearchBar';
+import Result from './components/Result';
+import data from './bb-rc'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+// const [eachOutput, setEachOutput] = useState(data)
+// const state = {
+//   }
+
+class App extends React.Component {
+  constructor(){
+    super()
+    this.state = {
+      data: data,
+      searchfield: ''
+    }
+  }
+
+  onSearchChange = event =>{
+    //console.log(this.state.data)
+    //console.log(event.target.value);
+    this.setState({searchfield: event.target.value})
+    console.log(event.target.value);
+  }
+
+render(){
+  const filteredData = this.state.data.map(events => {
+    return events.filter(oneEvent => {
+     // console.log(oneEvent.title.toLowerCase())
+       return oneEvent.title.toLowerCase().includes(this.state.searchfield)
+    })
+  })
+  // this.setState({data: filteredData})
+  console.log(filteredData);
+
+  return ( 
+    <div>
+    <SearchBar searchChange={this.onSearchChange}/>
+    <Result data={filteredData} />
     </div>
   );
+}
 }
 
 export default App;
